@@ -6,21 +6,19 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
-const Hello = props => (
-  <div>Hello {props.name}!</div>
+import { TeamsContext, TeamsDataProvider } from '../src/contexts/teams_context'
+
+import TeamsIndex from '../src/views/teams/index'
+
+const App = () => (
+  <TeamsIndex />
 )
-
-Hello.defaultProps = {
-  name: 'David'
-}
-
-Hello.propTypes = {
-  name: PropTypes.string
-}
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Hello name="React" />,
+    <TeamsDataProvider>
+      <App />
+    </TeamsDataProvider>,
     document.body.appendChild(document.createElement('div')),
   )
 })

@@ -1,12 +1,12 @@
 class Etl::Teams::AllTeamsJob < Etl::BaseJob
 
-  def initialize(season)
-    super
-    @season = season
-    @transformed_data = []
-  end
-
   private
+
+  def set_keys(*args)
+    super
+    @transformed_data = []
+    @season = @args[0]
+  end
 
   def extract
     @extracted_data = MlbClient.fetch_teams(@season)

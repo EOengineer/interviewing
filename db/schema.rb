@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2022_03_13_041523) do
   end
 
   create_table "teams", force: :cascade do |t|
+    t.integer "year"
     t.string "venue"
     t.string "name", null: false
     t.string "franchise_code"
@@ -77,6 +78,8 @@ ActiveRecord::Schema.define(version: 2022_03_13_041523) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_teams_on_name"
     t.index ["team_code"], name: "index_teams_on_team_code"
+    t.index ["year", "name"], name: "index_teams_on_year_and_name", unique: true
+    t.index ["year"], name: "index_teams_on_year"
   end
 
   add_foreign_key "players", "rosters"

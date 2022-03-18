@@ -10,11 +10,13 @@ class Etl::Teams::AllTeamsJob < Etl::BaseJob
 
   def extract
     @extracted_data = MlbClient.fetch_teams(@season)
+    puts "extracting teams for #{@season}...."
   end
 
   def transform
     @extracted_data.map do |extracted_team|
       @transformed_data << {
+        year: @season,
         venue: extracted_team['venue_short'],
       	name: extracted_team['name'],
       	franchise_code: extracted_team['franchise_code'],
@@ -38,33 +40,41 @@ class Etl::Teams::AllTeamsJob < Etl::BaseJob
       	time_zone_utc_offset: extracted_team['time_zone_num']
       }
     end
+    puts "transforming teams for #{@season}...."
   end
 
   def load
     @transformed_data.each do |transformed_team|
-      Team.find_or_create_by!(team_code: transformed_team[:team_code], name: transformed_team[:name]) do |team_to_load|
-        team_to_load.venue                = transformed_team[:venue]
-      	team_to_load.name                 = transformed_team[:name]
-      	team_to_load.franchise_code       = transformed_team[:franchise_code]
-      	team_to_load.sport_code           = transformed_team[:sport_code]
-      	team_to_load.city                 = transformed_team[:city]
-      	team_to_load.full_display_name    = transformed_team[:full_display_name]
-      	team_to_load.time_zone            = transformed_team[:time_zone]
-      	team_to_load.alternate_time_zone  = transformed_team[:alternate_time_zone]
-      	team_to_load.league_long          = transformed_team[:league_long]
-      	team_to_load.league_short         = transformed_team[:league_short]
-      	team_to_load.abbreviated_name     = transformed_team[:abbreviated_name]
-      	team_to_load.team_code            = transformed_team[:team_code]
-      	team_to_load.base_url             = transformed_team[:base_url]
-      	team_to_load.address_line1        = transformed_team[:address_line1]
-      	team_to_load.address_line2        = transformed_team[:address_line2]
-      	team_to_load.address_line3        = transformed_team[:address_line3]
-      	team_to_load.division_short       = transformed_team[:division_short]
-        team_to_load.division_long        = transformed_team[:division_long]
-      	team_to_load.state                = transformed_team[:state]
-      	team_to_load.website_url          = transformed_team[:website_url]
-      	team_to_load.time_zone_utc_offset = transformed_team[:time_zone_utc_offset]
+      lookup_attributes = {
+        team_code: transformed_team[:team_code],
+        name: transformed_team[:name],
+        year: transformed_team[:year]
+      }
+
+      Team.where(lookup_attributes).first_or_initialize do |team_to_load|
+        updated_attributes = {}
+        # populate the model
+        writable_attributes.each do |attribute|
+          team_to_load[attribute] = transformed_team[attribute.to_sym]
+          updated_attributes[attribute.to_sym] = transformed_team[attribute.to_sym]
+        end
+
+        # save the model
+        if team_to_load.new_record?
+          team_to_load.save!
+        else
+          team_to_load.update!(updated_attributes)
+        end
       end
     end
+    puts "Saving teams for #{@season}...."
+  end
+
+  def writable_attributes
+    %w[venue franchise_code sport_code
+       city full_display_name time_zone alternate_time_zone
+       league_long league_short abbreviated_name base_url
+       address_line1 address_line2 address_line3 division_short division_long
+       state website_url time_zone_utc_offset]
   end
 end

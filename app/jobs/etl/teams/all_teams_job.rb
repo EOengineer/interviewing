@@ -1,19 +1,22 @@
 class Etl::Teams::AllTeamsJob < Etl::BaseJob
+  # Operates on all the teams for a provided season.
 
   private
 
   def set_keys(*args)
     super
+    @season = @args[0] # receives a year string representing a single season
     @transformed_data = []
-    @season = @args[0]
   end
 
   def extract
-    @extracted_data = MlbClient.fetch_teams(@season)
     puts "extracting teams for #{@season}...."
+    @extracted_data = MlbClient.fetch_teams(@season)
   end
 
   def transform
+    puts "transforming teams for #{@season}...."
+
     @extracted_data.map do |extracted_team|
       @transformed_data << {
         year: @season,
@@ -40,41 +43,49 @@ class Etl::Teams::AllTeamsJob < Etl::BaseJob
       	time_zone_utc_offset: extracted_team['time_zone_num']
       }
     end
-    puts "transforming teams for #{@season}...."
   end
 
   def load
+    puts "Saving teams for #{@season}...."
     @transformed_data.each do |transformed_team|
-      lookup_attributes = {
-        team_code: transformed_team[:team_code],
-        name: transformed_team[:name],
-        year: transformed_team[:year]
-      }
+      finder_hash = populate_attributes(finder_attributes, transformed_team)
 
-      Team.where(lookup_attributes).first_or_initialize do |team_to_load|
-        updated_attributes = {}
+      Team.where(finder_hash).first_or_initialize do |team_to_load|
         # populate the model
         writable_attributes.each do |attribute|
           team_to_load[attribute] = transformed_team[attribute.to_sym]
-          updated_attributes[attribute.to_sym] = transformed_team[attribute.to_sym]
         end
-
         # save the model
-        if team_to_load.new_record?
-          team_to_load.save!
-        else
-          team_to_load.update!(updated_attributes)
-        end
+        create_or_update_record(team_to_load)
       end
     end
-    puts "Saving teams for #{@season}...."
   end
 
+  # converts [my, hash, keys] => { my: team[my], team: team[hash], key: team[key] }
+  def populate_attributes(attribute_array, team)
+    attribute_array.to_h { |key| [key, team[key.to_sym]] }
+  end
+
+  # attributes used in the lookup of existing records
+  def finder_attributes
+    %i[team_code name year]
+  end
+
+  # attributes that should be passed into the .update method for existing records
   def writable_attributes
     %w[venue franchise_code sport_code
        city full_display_name time_zone alternate_time_zone
        league_long league_short abbreviated_name base_url
        address_line1 address_line2 address_line3 division_short division_long
        state website_url time_zone_utc_offset]
+  end
+
+  # determines if new record should be created, or existing one updated.
+  def create_or_update_record(team)
+    if team.new_record?
+      team.save!
+    else
+      team.update!(populate_attributes(writable_attributes, team))
+    end
   end
 end

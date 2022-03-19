@@ -6,4 +6,6 @@ class Team < ApplicationRecord
             :abbreviated_name,
             :team_code,
             presence: true
+
+  validates :name, uniqueness: { scope: :year, message: 'already exists for this season' }
 end

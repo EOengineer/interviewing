@@ -44,15 +44,17 @@ ActiveRecord::Schema.define(version: 2022_03_13_041523) do
 
   create_table "rosters", force: :cascade do |t|
     t.bigint "team_id", null: false
+    t.string "team_code", null: false
     t.string "year", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_code"], name: "index_rosters_on_team_code"
+    t.index ["team_id", "year"], name: "index_rosters_on_team_id_and_year", unique: true
     t.index ["team_id"], name: "index_rosters_on_team_id"
     t.index ["year"], name: "index_rosters_on_year"
   end
 
   create_table "teams", force: :cascade do |t|
-    t.integer "year"
     t.string "venue"
     t.string "name", null: false
     t.string "franchise_code"
@@ -76,10 +78,9 @@ ActiveRecord::Schema.define(version: 2022_03_13_041523) do
     t.string "time_zone_utc_offset"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["full_display_name"], name: "index_teams_on_full_display_name"
     t.index ["name"], name: "index_teams_on_name"
     t.index ["team_code"], name: "index_teams_on_team_code"
-    t.index ["year", "name"], name: "index_teams_on_year_and_name", unique: true
-    t.index ["year"], name: "index_teams_on_year"
   end
 
   add_foreign_key "players", "rosters"

@@ -1,7 +1,6 @@
 class CreateTeams < ActiveRecord::Migration[6.1]
   def change
     create_table :teams do |t|
-      t.integer :year
     	t.string :venue
     	t.string :name, null: false
     	t.string :franchise_code
@@ -27,8 +26,7 @@ class CreateTeams < ActiveRecord::Migration[6.1]
       t.timestamps
     end
     add_index :teams, :name
+    add_index :teams, :full_display_name
     add_index :teams, :team_code
-    add_index :teams, :year
-    add_index :teams, [:year, :name], unique: true
   end
 end

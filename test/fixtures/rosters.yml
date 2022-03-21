@@ -3,9 +3,11 @@
 one:
   team: one
   year: MyString
+  team_code: string
   timestamps: MyString
 
 two:
   team: two
   year: MyString
+  team_code: string
   timestamps: MyString

@@ -19,7 +19,6 @@ class Etl::Teams::AllTeamsJob < Etl::BaseJob
 
     @extracted_data.map do |extracted_team|
       @transformed_data << {
-        year: @season,
         venue: extracted_team['venue_short'],
       	name: extracted_team['name'],
       	franchise_code: extracted_team['franchise_code'],
@@ -50,7 +49,7 @@ class Etl::Teams::AllTeamsJob < Etl::BaseJob
     @transformed_data.each do |transformed_team|
       finder_hash = populate_attributes(finder_attributes, transformed_team)
 
-      Team.where(finder_hash).first_or_initialize do |team_to_load|
+      team = Team.where(finder_hash).first_or_initialize do |team_to_load|
         # populate the model
         writable_attributes.each do |attribute|
           team_to_load[attribute] = transformed_team[attribute.to_sym]
@@ -58,34 +57,30 @@ class Etl::Teams::AllTeamsJob < Etl::BaseJob
         # save the model
         create_or_update_record(team_to_load)
       end
-    end
-  end
 
-  # converts [my, hash, keys] => { my: team[my], team: team[hash], key: team[key] }
-  def populate_attributes(attribute_array, team)
-    attribute_array.to_h { |key| [key, team[key.to_sym]] }
+      puts "Saving #{@season} roster for the #{team.name}...."
+      Roster.where(team_id: team.id, year: @season).first_or_initialize do |roster_to_load|
+        roster_to_load.team_id = team.id
+        roster_to_load.team_code = team.team_code
+        roster_to_load.year = @season
+        create_or_update_record(roster_to_load)
+      end
+    end
   end
 
   # attributes used in the lookup of existing records
   def finder_attributes
-    %i[team_code name year]
+    %i[team_code name]
   end
 
   # attributes that should be passed into the .update method for existing records
   def writable_attributes
-    %w[venue franchise_code sport_code
+    %w[venue franchise_code team_code name sport_code
        city full_display_name time_zone alternate_time_zone
        league_long league_short abbreviated_name base_url
        address_line1 address_line2 address_line3 division_short division_long
        state website_url time_zone_utc_offset]
   end
 
-  # determines if new record should be created, or existing one updated.
-  def create_or_update_record(team)
-    if team.new_record?
-      team.save!
-    else
-      team.update!(populate_attributes(writable_attributes, team))
-    end
-  end
+
 end

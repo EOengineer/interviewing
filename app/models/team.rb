@@ -7,5 +7,5 @@ class Team < ApplicationRecord
             :team_code,
             presence: true
 
-  validates :name, uniqueness: { scope: :year, message: 'already exists for this season' }
+  validates :name, uniqueness: true
 end

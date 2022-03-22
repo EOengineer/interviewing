@@ -57,14 +57,6 @@ class Etl::Teams::AllTeamsJob < Etl::BaseJob
         # save the model
         create_or_update_record(team_to_load)
       end
-
-      puts "Saving #{@season} roster for the #{team.name}...."
-      Roster.where(team_id: team.id, year: @season).first_or_initialize do |roster_to_load|
-        roster_to_load.team_id = team.id
-        roster_to_load.team_code = team.team_code
-        roster_to_load.year = @season
-        create_or_update_record(roster_to_load)
-      end
     end
   end
 

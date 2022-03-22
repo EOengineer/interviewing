@@ -1,4 +1,4 @@
-class Etl::Teams::AllTeamsJob < Etl::BaseJob
+class Etl::Teams::YearlyJob < Etl::BaseJob
   # Operates on all the teams for a provided season.
 
   private

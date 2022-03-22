@@ -1,4 +1,4 @@
-class Etl::Teams::HistoricalTeamsJob < ApplicationJob
+class Etl::Teams::HistoricalJob < ApplicationJob
   # Kicks off teams collection for 5 most recent seasons
   def perform()
     (range_start...range_end).to_a.each do |year|

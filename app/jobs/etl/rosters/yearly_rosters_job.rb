@@ -1,5 +1,5 @@
 class Etl::Rosters::YearlyRostersJob < Etl::BaseJob
-  # Operates on all the teams for a provided season.
+  # creates a roster record for each team for a provided season (year).
 
   private
 

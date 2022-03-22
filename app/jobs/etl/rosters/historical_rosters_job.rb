@@ -1,5 +1,5 @@
 class Etl::Rosters::HistoricalRostersJob < ApplicationJob
-  # Kicks off teams collection for 5 most recent seasons
+  # Kicks off roster creation for 5 most recent seasons
   def perform()
     (range_start...range_end).to_a.each do |year|
       Etl::Rosters::YearlyRostersJob.perform_later(year)

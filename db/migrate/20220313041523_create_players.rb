@@ -16,13 +16,15 @@ class CreatePlayers < ActiveRecord::Migration[6.1]
       t.string :name, null: false
       t.string :name_sort, null: false
       t.string :status
-      t.string :roster_year, null: false
+      t.string :year, null: false
+      t.string :name_last_first, null: false
 
       t.timestamps
     end
     add_index :players, :name
     add_index :players, :name_sort
     add_index :players, :player_code
-    add_index :players, :roster_year
+    add_index :players, :year
+    add_index :players, [:name, :player_code, :year]
   end
 end

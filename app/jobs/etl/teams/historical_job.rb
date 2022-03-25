@@ -2,7 +2,7 @@ class Etl::Teams::HistoricalJob < ApplicationJob
   # Kicks off teams collection for 5 most recent seasons
   def perform()
     (range_start...range_end).to_a.each do |year|
-      Etl::Teams::AllTeamsJob.perform_later(year)
+      Etl::Teams::YearlyJob.perform_later(year)
     end
   end
 

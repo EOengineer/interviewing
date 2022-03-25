@@ -5,6 +5,6 @@ class Player < ApplicationRecord
   validates :player_code,
             :name,
             :name_sort,
-            :roster_year,
+            :year,
             presence: true
 end

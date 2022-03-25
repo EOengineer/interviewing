@@ -31,15 +31,17 @@ ActiveRecord::Schema.define(version: 2022_03_13_041523) do
     t.string "name", null: false
     t.string "name_sort", null: false
     t.string "status"
-    t.string "roster_year", null: false
+    t.string "year", null: false
+    t.string "name_last_first", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name", "player_code", "year"], name: "index_players_on_name_and_player_code_and_year"
     t.index ["name"], name: "index_players_on_name"
     t.index ["name_sort"], name: "index_players_on_name_sort"
     t.index ["player_code"], name: "index_players_on_player_code"
     t.index ["roster_id"], name: "index_players_on_roster_id"
-    t.index ["roster_year"], name: "index_players_on_roster_year"
     t.index ["team_id"], name: "index_players_on_team_id"
+    t.index ["year"], name: "index_players_on_year"
   end
 
   create_table "rosters", force: :cascade do |t|

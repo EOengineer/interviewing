@@ -10,10 +10,62 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_13_041523) do
+ActiveRecord::Schema.define(version: 2022_03_29_144941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "batting_stats_yearlies", force: :cascade do |t|
+    t.integer "hr", null: false
+    t.integer "year", null: false
+    t.integer "ab", default: 0
+    t.integer "hldr", default: 0
+    t.string "league", null: false
+    t.integer "ao", default: 0
+    t.string "slg", null: false
+    t.string "ops", null: false
+    t.integer "hbp", default: 0
+    t.integer "rbi", default: 0
+    t.string "go_ao", null: false
+    t.integer "hfly", default: 0
+    t.integer "lob", default: 0
+    t.integer "xbh", default: 0
+    t.datetime "end_date"
+    t.integer "bb", default: 0
+    t.integer "np", default: 0
+    t.integer "hgnd", default: 0
+    t.integer "oe", default: 0
+    t.integer "sb", default: 0
+    t.bigint "player_id"
+    t.string "player_code"
+    t.string "avg", null: false
+    t.integer "sf", default: 0
+    t.integer "sac", default: 0
+    t.integer "wo", default: 0
+    t.integer "hpop", default: 0
+    t.integer "so", default: 0
+    t.integer "gidp_opp", default: 0
+    t.integer "gidp", default: 0
+    t.string "ppa", null: false
+    t.integer "d", default: 0
+    t.integer "tpa", default: 0
+    t.integer "g", default: 0
+    t.integer "h", default: 0
+    t.integer "ibb", default: 0
+    t.integer "go", default: 0
+    t.string "team_seq"
+    t.integer "tb", default: 0
+    t.integer "cs", default: 0
+    t.integer "r", default: 0
+    t.integer "t", default: 0
+    t.string "babip", null: false
+    t.string "obp", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id", "year"], name: "index_batting_stats_yearlies_on_player_id_and_year", unique: true
+    t.index ["player_id"], name: "index_batting_stats_yearlies_on_player_id"
+    t.index ["year"], name: "index_batting_stats_yearlies_on_year"
+  end
 
   create_table "players", force: :cascade do |t|
     t.bigint "roster_id", null: false
@@ -31,7 +83,7 @@ ActiveRecord::Schema.define(version: 2022_03_13_041523) do
     t.string "name", null: false
     t.string "name_sort", null: false
     t.string "status"
-    t.string "year", null: false
+    t.integer "year", null: false
     t.string "name_last_first", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -47,7 +99,7 @@ ActiveRecord::Schema.define(version: 2022_03_13_041523) do
   create_table "rosters", force: :cascade do |t|
     t.bigint "team_id", null: false
     t.string "team_code", null: false
-    t.string "year", null: false
+    t.integer "year", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["team_code"], name: "index_rosters_on_team_code"

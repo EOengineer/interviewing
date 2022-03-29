@@ -19,10 +19,10 @@ class CreateBattingStatsYearly < ActiveRecord::Migration[6.1]
       t.integer :bb, default: 0
       t.integer :np, default: 0
       t.integer :hgnd, default: 0
-      t.integer :oe, default: 0
+      t.integer :roe, default: 0
       t.integer :sb, default: 0
       t.references :player # references our players.id
-      t.string :player_code # references API source player_id
+      t.string :player_code, null: false # references API source player_id
       t.string :avg, null: false
       t.integer :sf, default: 0
       t.integer :sac, default: 0
@@ -49,6 +49,8 @@ class CreateBattingStatsYearly < ActiveRecord::Migration[6.1]
       t.timestamps
     end
     add_index :batting_stats_yearlies, :year
+    add_index :batting_stats_yearlies, :player_code
+    add_index :batting_stats_yearlies, [:player_code, :year], unique: true
     add_index :batting_stats_yearlies, [:player_id, :year], unique: true
   end
 end

@@ -34,10 +34,10 @@ ActiveRecord::Schema.define(version: 2022_03_29_144941) do
     t.integer "bb", default: 0
     t.integer "np", default: 0
     t.integer "hgnd", default: 0
-    t.integer "oe", default: 0
+    t.integer "roe", default: 0
     t.integer "sb", default: 0
     t.bigint "player_id"
-    t.string "player_code"
+    t.string "player_code", null: false
     t.string "avg", null: false
     t.integer "sf", default: 0
     t.integer "sac", default: 0
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(version: 2022_03_29_144941) do
     t.string "obp", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_code", "year"], name: "index_batting_stats_yearlies_on_player_code_and_year", unique: true
+    t.index ["player_code"], name: "index_batting_stats_yearlies_on_player_code"
     t.index ["player_id", "year"], name: "index_batting_stats_yearlies_on_player_id_and_year", unique: true
     t.index ["player_id"], name: "index_batting_stats_yearlies_on_player_id"
     t.index ["year"], name: "index_batting_stats_yearlies_on_year"

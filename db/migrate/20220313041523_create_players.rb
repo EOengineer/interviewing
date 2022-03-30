@@ -16,7 +16,7 @@ class CreatePlayers < ActiveRecord::Migration[6.1]
       t.string :name, null: false
       t.string :name_sort, null: false
       t.string :status
-      t.string :year, null: false
+      t.integer :year, null: false
       t.string :name_last_first, null: false
 
       t.timestamps

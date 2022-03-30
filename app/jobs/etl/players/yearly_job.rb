@@ -50,7 +50,7 @@ class Etl::Players::YearlyJob < Etl::BaseJob
     @transformed_data.each do |transformed_team|
       finder_hash = populate_attributes(finder_attributes, transformed_team)
 
-      player = Player.where(finder_hash).first_or_initialize do |player_to_load|
+      Player.where(finder_hash).first_or_initialize do |player_to_load|
         # populate the model
         writable_attributes.each do |attribute|
           player_to_load[attribute] = transformed_team[attribute.to_sym]

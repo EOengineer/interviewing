@@ -10,10 +10,64 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_13_041523) do
+ActiveRecord::Schema.define(version: 2022_03_29_144941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "batting_stats_yearlies", force: :cascade do |t|
+    t.integer "hr"
+    t.integer "year", null: false
+    t.integer "ab"
+    t.integer "hldr"
+    t.string "league"
+    t.integer "ao"
+    t.string "slg"
+    t.string "ops"
+    t.integer "hbp"
+    t.integer "rbi"
+    t.string "go_ao"
+    t.integer "hfly"
+    t.integer "lob"
+    t.integer "xbh"
+    t.datetime "end_date"
+    t.integer "bb"
+    t.integer "np"
+    t.integer "hgnd"
+    t.integer "roe"
+    t.integer "sb"
+    t.bigint "player_id"
+    t.string "player_code", null: false
+    t.string "avg"
+    t.integer "sf"
+    t.integer "sac"
+    t.integer "wo"
+    t.integer "hpop"
+    t.integer "so"
+    t.integer "gidp_opp"
+    t.integer "gidp"
+    t.string "ppa"
+    t.integer "d"
+    t.integer "tpa"
+    t.integer "g"
+    t.integer "h"
+    t.integer "ibb"
+    t.integer "go"
+    t.string "team_seq"
+    t.integer "tb"
+    t.integer "cs"
+    t.integer "r"
+    t.integer "t"
+    t.string "babip"
+    t.string "obp"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_code", "year"], name: "index_batting_stats_yearlies_on_player_code_and_year", unique: true
+    t.index ["player_code"], name: "index_batting_stats_yearlies_on_player_code"
+    t.index ["player_id", "year"], name: "index_batting_stats_yearlies_on_player_id_and_year", unique: true
+    t.index ["player_id"], name: "index_batting_stats_yearlies_on_player_id"
+    t.index ["year"], name: "index_batting_stats_yearlies_on_year"
+  end
 
   create_table "players", force: :cascade do |t|
     t.bigint "roster_id", null: false
@@ -31,7 +85,7 @@ ActiveRecord::Schema.define(version: 2022_03_13_041523) do
     t.string "name", null: false
     t.string "name_sort", null: false
     t.string "status"
-    t.string "year", null: false
+    t.integer "year", null: false
     t.string "name_last_first", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -47,7 +101,7 @@ ActiveRecord::Schema.define(version: 2022_03_13_041523) do
   create_table "rosters", force: :cascade do |t|
     t.bigint "team_id", null: false
     t.string "team_code", null: false
-    t.string "year", null: false
+    t.integer "year", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["team_code"], name: "index_rosters_on_team_code"

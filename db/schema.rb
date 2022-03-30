@@ -16,50 +16,50 @@ ActiveRecord::Schema.define(version: 2022_03_29_144941) do
   enable_extension "plpgsql"
 
   create_table "batting_stats_yearlies", force: :cascade do |t|
-    t.integer "hr", null: false
+    t.integer "hr"
     t.integer "year", null: false
-    t.integer "ab", default: 0
-    t.integer "hldr", default: 0
-    t.string "league", null: false
-    t.integer "ao", default: 0
-    t.string "slg", null: false
-    t.string "ops", null: false
-    t.integer "hbp", default: 0
-    t.integer "rbi", default: 0
-    t.string "go_ao", null: false
-    t.integer "hfly", default: 0
-    t.integer "lob", default: 0
-    t.integer "xbh", default: 0
+    t.integer "ab"
+    t.integer "hldr"
+    t.string "league"
+    t.integer "ao"
+    t.string "slg"
+    t.string "ops"
+    t.integer "hbp"
+    t.integer "rbi"
+    t.string "go_ao"
+    t.integer "hfly"
+    t.integer "lob"
+    t.integer "xbh"
     t.datetime "end_date"
-    t.integer "bb", default: 0
-    t.integer "np", default: 0
-    t.integer "hgnd", default: 0
-    t.integer "roe", default: 0
-    t.integer "sb", default: 0
+    t.integer "bb"
+    t.integer "np"
+    t.integer "hgnd"
+    t.integer "roe"
+    t.integer "sb"
     t.bigint "player_id"
     t.string "player_code", null: false
-    t.string "avg", null: false
-    t.integer "sf", default: 0
-    t.integer "sac", default: 0
-    t.integer "wo", default: 0
-    t.integer "hpop", default: 0
-    t.integer "so", default: 0
-    t.integer "gidp_opp", default: 0
-    t.integer "gidp", default: 0
-    t.string "ppa", null: false
-    t.integer "d", default: 0
-    t.integer "tpa", default: 0
-    t.integer "g", default: 0
-    t.integer "h", default: 0
-    t.integer "ibb", default: 0
-    t.integer "go", default: 0
+    t.string "avg"
+    t.integer "sf"
+    t.integer "sac"
+    t.integer "wo"
+    t.integer "hpop"
+    t.integer "so"
+    t.integer "gidp_opp"
+    t.integer "gidp"
+    t.string "ppa"
+    t.integer "d"
+    t.integer "tpa"
+    t.integer "g"
+    t.integer "h"
+    t.integer "ibb"
+    t.integer "go"
     t.string "team_seq"
-    t.integer "tb", default: 0
-    t.integer "cs", default: 0
-    t.integer "r", default: 0
-    t.integer "t", default: 0
-    t.string "babip", null: false
-    t.string "obp", null: false
+    t.integer "tb"
+    t.integer "cs"
+    t.integer "r"
+    t.integer "t"
+    t.string "babip"
+    t.string "obp"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_code", "year"], name: "index_batting_stats_yearlies_on_player_code_and_year", unique: true

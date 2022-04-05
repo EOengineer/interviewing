@@ -18,7 +18,6 @@ class Etl::BattingStats::YearlyJob < Etl::BaseJob
 
   def transform
     puts "transforming #{@player.year} hitting stats for #{@player.name_last_first}...."
-
     # In some cases, the API may return an array if a player played for multiple teams that year.
     # We select the stats matching the current roster team.
     if @extracted_data.is_a?(Array)
@@ -70,13 +69,20 @@ class Etl::BattingStats::YearlyJob < Etl::BaseJob
       @transformed_data[:t] = @extracted_data['t']
       @transformed_data[:babip] = @extracted_data['babip']
       @transformed_data[:obp] = @extracted_data['obp']
+    else
+      # TODO: log instances where stats data is not returned for a hitter for a given season.
+      # it is not yet known why these players don't return stats, but presumably its that they
+      # did not have any at-bats that season.
+      puts "extracted data not present for #{@player.name_last_first} in #{@player.year}"
     end
   end
 
   def load
-    puts "Saving #{@player.year} hitting stats for #{@player.name_last_first}...."
+    if @extracted_data.present?
 
-    BattingStatsYearly
+      puts "Saving #{@player.year} hitting stats for #{@player.name_last_first}...."
+
+      BattingStatsYearly
       .where(populate_attributes(finder_attributes, @transformed_data))
       .first_or_initialize do |batting_stat|
         # populate the model
@@ -88,6 +94,9 @@ class Etl::BattingStats::YearlyJob < Etl::BaseJob
         # save the model
         create_or_update_record(batting_stat)
       end
+    else
+      puts "#{@player.year} hitting stats not loaded for #{@player.name_last_first}, no data present...."
+    end
   end
 
   # attributes used in the lookup of existing records

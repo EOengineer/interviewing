@@ -8,9 +8,10 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'app', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <div id="root" data-current-user="<%= @user.to_json(only: [:email, :id, :favorite_team_id]) %>"><%= yield %></div>
   </body>
 </html>

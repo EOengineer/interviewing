@@ -30,6 +30,8 @@ gem 'jbuilder', '~> 2.7'
 gem 'sidekiq'
 # better HTTP client
 gem 'rest-client'
+# Authentication
+gem 'devise'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

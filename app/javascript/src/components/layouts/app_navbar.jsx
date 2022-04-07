@@ -45,6 +45,9 @@ const AppNavBar = () => {
                   <DropdownItem>
                     Season Pitching
                   </DropdownItem>
+                  <DropdownItem>
+                    <a href="/users/sign_out" data-method="delete" rel="nofollow">Sign Out</a>
+                  </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>

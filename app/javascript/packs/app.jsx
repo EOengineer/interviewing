@@ -8,21 +8,14 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
 import AppNavBar from '../src/components/layouts/app_navbar'
-import { TeamsContext, TeamsDataProvider } from '../src/contexts/teams_context'
-
-import TeamsIndex from '../src/views/teams/index'
+import { CurrentUserDataProvider } from '../src/contexts/current_user'
 
 const App = () => (
-  // <TeamsIndex />
-  <div>MLB Data Home Page</div>
+  <CurrentUserDataProvider>
+    <AppNavBar />
+  </CurrentUserDataProvider>
 )
 
 document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(
-    <TeamsDataProvider>
-      <AppNavBar />
-      <App />
-    </TeamsDataProvider>,
-    document.body.appendChild(document.createElement('div')),
-  )
+  ReactDOM.render(<App />, document.getElementById('root'))
 })

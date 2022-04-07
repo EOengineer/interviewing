@@ -12,6 +12,6 @@
   </head>
 
   <body>
-    <div id="root" data-current-user="<%= @user.to_json(only: [:email, :id, :favorite_team_id]) %>"><%= yield %></div>
+    <div id="root" data-current_user="<%= @user.to_json(only: [:email, :id, :favorite_team_id]) %>"><%= yield %></div>
   </body>
 </html>

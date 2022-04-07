@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { TeamsContext } from '../../contexts/teams_context'
+import { TeamsContext } from '../../contexts/teams'
 
 const TeamsIndex = () => {
   const teamsContext    = useContext(TeamsContext)

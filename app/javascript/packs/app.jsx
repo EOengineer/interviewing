@@ -6,13 +6,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import { BrowserRouter } from "react-router-dom";
 
 import AppNavBar from '../src/components/layouts/app_navbar'
 import { CurrentUserDataProvider } from '../src/contexts/current_user'
 
 const App = () => (
   <CurrentUserDataProvider>
-    <AppNavBar />
+    <BrowserRouter>
+      <AppNavBar />
+    </BrowserRouter>
   </CurrentUserDataProvider>
 )
 

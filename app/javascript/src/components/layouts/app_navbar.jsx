@@ -11,7 +11,7 @@ import {
   DropdownMenu,
   DropdownItem } from 'reactstrap';
 
-import { Routes, Route, NavLink } from 'react-router-dom'
+import { Routes, Route, NavLink, Link } from 'react-router-dom'
 
 import TeamsIndex from '../../views/teams/index'
 
@@ -36,7 +36,7 @@ const AppNavBar = () => {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">MLB Data</NavbarBrand>
+        <Link className="navbar-brand" to="/">MLB Data</Link>
         <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
@@ -44,10 +44,10 @@ const AppNavBar = () => {
             currentUserContext.user &&
             <>
               <NavItem>
-                <NavLink to="/teams">Teams</NavLink>
+                <NavLink className="nav-link" to="/teams">Teams</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to="/players">Players</NavLink>
+                <NavLink className="nav-link" to="/players">Players</NavLink>
               </NavItem>
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
@@ -68,19 +68,35 @@ const AppNavBar = () => {
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                <NavItem>
-                  <NavLink to="/users/sign_out">Sign Out</NavLink>
-                </NavItem>
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret>
+                    My Stuff
+                  </DropdownToggle>
+                  <DropdownMenu end>
+                    <DropdownItem>
+                      Add A Team
+                    </DropdownItem>
+                    <DropdownItem>
+                      Add A Player
+                    </DropdownItem>
+                    <DropdownItem>
+                      Profile
+                    </DropdownItem>
+                    <DropdownItem>
+                      <a href="/users/sign_out" data-method="delete" rel="nofollow">Sign Out</a>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </>
             }
             {
               !currentUserContext.user &&
               <>
                 <NavItem>
-                  <NavLink to="/users/sign_up">Register</NavLink>
+                  <a className="nav-link" href="/users/sign_up">Register</a>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/users/sign_in">Sign In</NavLink>
+                  <a className="nav-link" href="/users/sign_in">Sign In</a>
                 </NavItem>
               </>
             }

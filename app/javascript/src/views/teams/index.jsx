@@ -7,7 +7,11 @@ const TeamsIndex = () => {
 
   const teamsMap = teams.map(team => {
     return (
-      <div className='p-5 m-1 w-25 border text-center' key={team.name}>{team.name}</div>
+      <div
+        className='p-5 m-1 w-25 border text-center'
+        key={team.name}>
+          {team.name}
+      </div>
     )
   })
 

@@ -13,21 +13,14 @@ import {
 
 import { Routes, Route, NavLink, Link } from 'react-router-dom'
 
-import TeamsIndex from '../../views/teams/index'
+// routers
+import TeamsRouter from '../../views/teams/router'
+import ProfileRouter from '../../views/profile/router'
 
-import { TeamsDataProvider } from '../../contexts/teams'
-
+// contexts
 import { CurrentUserContext } from '../../contexts/current_user'
 
 const Home = () => <div>home</div>
-
-const AllTeams = () => {
-  return (
-    <TeamsDataProvider>
-      <TeamsIndex />
-    </TeamsDataProvider>
-  )
-}
 
 const AppNavBar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -80,7 +73,7 @@ const AppNavBar = () => {
                       Add A Player
                     </DropdownItem>
                     <DropdownItem>
-                      Profile
+                      <NavLink className="nav-link" to="/profile">Profile</NavLink>
                     </DropdownItem>
                     <DropdownItem>
                       <a href="/users/sign_out" data-method="delete" rel="nofollow">Sign Out</a>
@@ -106,7 +99,8 @@ const AppNavBar = () => {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/teams" element={<AllTeams/>} />
+          <Route path="/teams/*" element={<TeamsRouter/>} />
+          <Route path="/profile/*" element={<ProfileRouter/>} />
         </Routes>
     </div>
   );
